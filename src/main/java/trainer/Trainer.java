@@ -14,8 +14,6 @@ public class Trainer {
         this.name = name;
     }
 
-    // ================= TEAM MANAGEMENT =================
-
     public void addPokemon(Pokemon pokemon) {
 
         if (team.size() >= 6) {
@@ -56,15 +54,9 @@ public class Trainer {
 
             Pokemon p = team.get(i);
 
-            System.out.println(
-                    i + " - " +
-                            p.getName() +
-                            (p.isFainted() ? " (FAINTED)" : "")
-            );
+            System.out.println(i + " - " + p.getName() + (p.isFainted() ? " (FAINTED)" : ""));
         }
     }
-
-    // ================= BATTLE HELPERS =================
 
     public Pokemon getFirstAlivePokemon() {
 
@@ -109,8 +101,6 @@ public class Trainer {
             System.out.println("Invalid option.");
         }
     }
-
-    // ================= GETTERS =================
 
     public ArrayList<Pokemon> getTeam() {
         return team;
