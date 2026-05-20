@@ -23,22 +23,9 @@ public class Pokemon implements Battleable {
     private final int spDefense;
     private final int speed;
 
-    private final ArrayList<Move> moves =
-            new ArrayList<>();
+    private final ArrayList<Move> moves = new ArrayList<>();
 
-    public Pokemon(
-            int id,
-            String name,
-            MoveType type1,
-            MoveType type2,
-            int total,
-            int hp,
-            int attack,
-            int defense,
-            int spAttack,
-            int spDefense,
-            int speed
-    ) {
+    public Pokemon(int id, String name, MoveType type1, MoveType type2, int total, int hp, int attack, int defense, int spAttack, int spDefense, int speed) {
         this.id = id;
         this.name = name;
         this.type1 = type1;
@@ -59,27 +46,16 @@ public class Pokemon implements Battleable {
 
     private void buildMoves() {
 
-        // DEFENSE MOVE
-
         moves.add(createDefenseMove());
 
-        // TYPE 1 MOVES
-
-        ArrayList<Move> type1Moves =
-                TypeMoves.getMoves(type1);
-
-        // TYPE 2 MOVES
+        ArrayList<Move> type1Moves = TypeMoves.getMoves(type1);
 
         ArrayList<Move> type2Moves = null;
 
         if (type2 != null) {
 
-            type2Moves =
-                    TypeMoves.getMoves(type2);
+            type2Moves = TypeMoves.getMoves(type2);
         }
-
-        // FIRST ATTACK
-        // STRONGEST STATUS
 
         if (attack >= spAttack) {
 
@@ -89,8 +65,6 @@ public class Pokemon implements Battleable {
 
             moves.add(type1Moves.get(1));
         }
-
-        // SECOND ATTACK
 
         if (type2 != null) {
 
@@ -108,9 +82,6 @@ public class Pokemon implements Battleable {
             moves.add(type1Moves.get(2));
         }
 
-        // THIRD ATTACK
-        // WEAKEST STATUS
-
         if (attack >= spAttack) {
 
             moves.add(type1Moves.get(1));
@@ -124,13 +95,9 @@ public class Pokemon implements Battleable {
     private Move createDefenseMove() {
 
         return new Move(
-
                 "Defend",
-
                 MoveType.NORMAL,
-
                 MoveCategory.DEFENSE,
-
                 0
         );
     }
@@ -142,9 +109,7 @@ public class Pokemon implements Battleable {
 
         Move move = moves.get(index);
 
-        System.out.println(
-                "\n" + name + " used " + move.getName() + "!"
-        );
+        System.out.println("\n" + name + " used " + move.getName() + "!");
 
         if (move.getCategory() == MoveCategory.DEFENSE) {
             System.out.println(name + " is defending!");
@@ -155,12 +120,12 @@ public class Pokemon implements Battleable {
 
         if (move.getCategory() == MoveCategory.PHYSICAL) {
             damage = attack + move.getPower();
-        } else {
+        }
+        else {
             damage = spAttack + move.getPower();
         }
 
-        double multiplier =
-                calculateEffectiveness(move, enemy);
+        double multiplier = calculateEffectiveness(move, enemy);
 
         damage *= multiplier;
 
@@ -172,72 +137,45 @@ public class Pokemon implements Battleable {
 
         if (move.getCategory() == MoveCategory.PHYSICAL) {
             enemy.receiveDamage(damage);
-        } else {
+        }
+        else {
             enemy.receiveSpecialDamage(damage);
         }
     }
 
-    private double calculateEffectiveness(
+    private double calculateEffectiveness(Move move, Pokemon enemy) {
 
-            Move move,
-
-            Pokemon enemy
-    ) {
-
-        double multiplier =
-                TypeChart.getMultiplier(
-
-                        move.getType(),
-
-                        enemy.getType1()
-                );
-
-        // SECOND TYPE
+        double multiplier = TypeChart.getMultiplier(move.getType(), enemy.getType1());
 
         if (enemy.getType2() != null) {
 
-            multiplier *=
-                    TypeChart.getMultiplier(
-
-                            move.getType(),
-
-                            enemy.getType2()
-                    );
+            multiplier *= TypeChart.getMultiplier(move.getType(), enemy.getType2());
         }
 
         return multiplier;
     }
 
-    private void showEffectivenessMessage(
-            double multiplier
-    ) {
+    private void showEffectivenessMessage(double multiplier) {
 
         if (multiplier == 0) {
 
-            System.out.println(
-                    "It doesn't affect..."
-            );
+            System.out.println("It doesn't affect...");
         }
 
         else if (multiplier > 1) {
 
-            System.out.println(
-                    "It's super effective!"
-            );
+            System.out.println("It's super effective!");
         }
 
         else if (multiplier < 1) {
 
-            System.out.println(
-                    "It's not very effective..."
-            );
+            System.out.println("It's not very effective...");
         }
     }
 
     public void receiveDamage(int damage) {
 
-        int finalDamage =
-                damage - defense;
+        int finalDamage = damage - defense;
 
         if (finalDamage < 1) {
             finalDamage = 1;
@@ -249,18 +187,12 @@ public class Pokemon implements Battleable {
             currentHp = 0;
         }
 
-        System.out.println(
-                name +
-                        " received " +
-                        finalDamage +
-                        " damage!"
-        );
+        System.out.println(name + " received " + finalDamage + " damage!");
     }
 
     public void receiveSpecialDamage(int damage) {
 
-        int finalDamage =
-                damage - spDefense;
+        int finalDamage =damage - spDefense;
 
         if (finalDamage < 1) {
             finalDamage = 1;
@@ -272,105 +204,39 @@ public class Pokemon implements Battleable {
             currentHp = 0;
         }
 
-        System.out.println(
-                name +
-                        " received " +
-                        finalDamage +
-                        " special damage!"
-        );
+        System.out.println(name + " received " + finalDamage + " special damage!" );
     }
 
     public void showMoves() {
 
-        System.out.println(
-                "\n===== MOVES ====="
-        );
+        System.out.println("\n===== MOVES =====");
 
         for (int i = 0; i < moves.size(); i++) {
 
             Move move = moves.get(i);
 
-            System.out.println(
-
-                    i + " - " +
-
-                            move.getName() +
-
-                            " | " +
-
-                            move.getType() +
-
-                            " | " +
-
-                            move.getCategory()
-            );
+            System.out.println(i + " - " + move.getName() + " | " + move.getType() + " | " + move.getCategory());
         }
     }
 
     public void showStatus() {
 
-        System.out.println(
-                "\n===================="
-        );
-
-        System.out.println(
-                id + " - " + name
-        );
-
-        System.out.println(
-                "Type: " +
-                        type1 +
-                        (
-                                type2 != null
-                                        ? "/" + type2
-                                        : ""
-                        )
-        );
-
-        System.out.println(
-                "HP: " + currentHp + "/" + maxHp
-        );
-
-        System.out.println(
-                "Attack: " + attack
-        );
-
-        System.out.println(
-                "Defense: " + defense
-        );
-
-        System.out.println(
-                "SpAttack: " + spAttack
-        );
-
-        System.out.println(
-                "SpDefense: " + spDefense
-        );
-
-        System.out.println(
-                "Speed: " + speed
-        );
-
-        System.out.println(
-                "===================="
-        );
+        System.out.println("\n====================");
+        System.out.println(id + " - " + name);
+        System.out.println("Type: " + type1 + (type2 != null? "/" + type2: ""));
+        System.out.println("HP: " + currentHp + "/" + maxHp);
+        System.out.println("Attack: " + attack);
+        System.out.println("Defense: " + defense);
+        System.out.println("SpAttack: " + spAttack);
+        System.out.println("SpDefense: " + spDefense);
+        System.out.println("Speed: " + speed);
+        System.out.println("====================");
     }
 
     public void showSummary() {
 
-        System.out.printf(
-                "%3d - %-12s %-10s | HP:%3d ATK:%3d DEF:%3d SPATK:%3d SPDEF:%3d SPD:%3d | TOTAL:%3d%n",
-                id,
-                name,
-                type1 + (type2 != null ? "/" + type2 : ""),
-                currentHp,
-                attack,
-                defense,
-                spAttack,
-                spDefense,
-                speed,
-                total
-        );
+        System.out.printf("%3d - %-12s %-10s | HP:%3d ATK:%3d DEF:%3d SPATK:%3d SPDEF:%3d SPD:%3d | TOTAL:%3d%n", id, name,
+                type1 + (type2 != null ? "/" + type2 : ""), currentHp, attack, defense, spAttack, spDefense, speed, total);
     }
 
     public boolean isFainted() {
@@ -386,22 +252,18 @@ public class Pokemon implements Battleable {
     }
 
     public int getId() {
-
         return id;
     }
 
     public String getName() {
-
         return name;
     }
 
     public MoveType getType1() {
-
         return type1;
     }
 
     public MoveType getType2() {
-
         return type2;
     }
 
@@ -410,32 +272,26 @@ public class Pokemon implements Battleable {
     }
 
     public int getAttack() {
-
         return attack;
     }
 
     public int getDefense() {
-
         return defense;
     }
 
     public int getSpAttack() {
-
         return spAttack;
     }
 
     public int getSpDefense() {
-
         return spDefense;
     }
 
     public int getSpeed() {
-
         return speed;
     }
 
     public ArrayList<Move> getMoves() {
-
         return moves;
     }
 }
