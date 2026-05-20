@@ -4,18 +4,13 @@ import moves.MoveType;
 
 public class PokemonFactory {
 
-    public static Pokemon createPokemon(
-            int index
-    ) {
+    public static Pokemon createPokemon(int index) {
 
-        String data =
-                PokemonDatabase.POKEMONS[index];
+        String data = PokemonDatabase.POKEMONS[index];
 
-        String[] values =
-                data.split(";");
+        String[] values = data.split(";");
 
         return new Pokemon(
-
                 Integer.parseInt(values[0]),
                 values[1],
                 MoveType.valueOf(values[2]),
