@@ -1,0 +1,23 @@
+name: Quality Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run tests and quality gate
+        run: mvn clean verify
