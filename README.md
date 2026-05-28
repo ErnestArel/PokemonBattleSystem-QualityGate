@@ -9,5 +9,5 @@ Projeto desenvolvido em Java aplicando os principais pilares de POO:
 - Polimorfismo
 
 O sistema simula batalhas entre Pokémons com tipos, golpes e cálculo de efetividade.
-
+Test GitHub Actions
 Desenvolvido no IntelliJ IDEA.
